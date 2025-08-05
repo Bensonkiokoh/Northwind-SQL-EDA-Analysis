@@ -146,11 +146,40 @@ WHERE OrderDate IS NOT NULL
 GROUP BY FORMAT(Orderdate, 'yyyy-MM')
 ORDER BY OrderMonth 
 ```
+<img width="147" height="264" alt="Screenshot 2025-08-05 144941" src="https://github.com/user-attachments/assets/3ea2c11a-4805-47b8-9d76-5cc2696d8d7e" />
 
+#### Insight:
+This shows how active each month is in terms of order volume. 
 
+### Which days of the week get the most orders?
+```
+SELECT 
+	DATENAME(WEEKDAY , Orderdate) OrderDay,
+	COUNT(OrderID) TotalOrders
+FROM Orders
+GROUP BY DATENAME(WEEKDAY , Orderdate)
+ORDER BY TotalOrders DESC
+```
 
+<img width="148" height="119" alt="Screenshot 2025-08-05 145656" src="https://github.com/user-attachments/assets/23aa3b4d-4ca9-4e65-8b28-84a8ed52fcad" />
 
+#### Insight:
+This reveals buying behavior across the week. You’ll see which days customers are most active, which is helpful for staffing, promotions, and delivery planning.
 
+### Year-over-year order trend
+```
+SELECT 
+	YEAR(OrderDate) OrderYear,
+	COUNT(OrderID) TotalOrders
+FROM Orders
+WHERE OrderDate IS NOT NULL
+GROUP BY YEAR(OrderDate)
+ORDER BY TotalOrders DESC
+```
+<img width="138" height="81" alt="Screenshot 2025-08-05 150130" src="https://github.com/user-attachments/assets/2d678640-4e5a-4fb3-80ad-4e21490ff511" />
+
+#### Insight:
+This gives a big-picture view of whether business activity is growing or dropping year over year.
 
 
 
