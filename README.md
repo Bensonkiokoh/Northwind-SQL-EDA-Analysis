@@ -263,7 +263,14 @@ ORDER BY TotalOrders DESC
 #### Insight:
 This shows who's responsible for the most order activity. High volume doesn’t always mean high revenue, but it’s a strong indicator of workload.
 
+## Wrap-Up & Key Insights
+This analysis started with basic exploration and ended with a deeper understanding of what drives performance in the Northwind business. Here’s a quick summary of what stood out:
 
+- Top products by volume and revenue aren't always the same — meaning pricing and demand don't always align.
+- A few categories drive most of the revenue, suggesting focused marketing or inventory strategies.
+- Sales spike on specific days and months, which can help with planning campaigns or staffing.
+- Some employees consistently handle more orders and bring in more revenue, useful for performance tracking or training others.
+- Revenue is concentrated among certain products, categories, and regions—showing clear priorities for the business
 
 
 
