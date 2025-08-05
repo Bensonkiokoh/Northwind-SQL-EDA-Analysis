@@ -181,18 +181,86 @@ ORDER BY TotalOrders DESC
 #### Insight:
 This gives a big-picture view of whether business activity is growing or dropping year over year.
 
+## Revenue Trends
+Order volume tells you how busy things are revenue shows what actually matters. In this step, I looked at when the business earns the most, how it changes over time, and which days bring in the biggest sales.
 
+### Monthly revenue trend
+```
+SELECT 
+	FORMAT(O.orderdate , 'yyyy-MM') OrderMonth,
+	ROUND(SUM(OD.UnitPrice * OD.Quantity * (1-OD.Discount)),2) TotalRevenue
+FROM Orders O
+INNER JOIN [Order Details] OD ON O.OrderID = OD.OrderID
+GROUP BY FORMAT(O.orderdate , 'yyyy-MM')
+ORDER BY OrderMonth
+```
+<img width="159" height="379" alt="Screenshot 2025-08-05 151647" src="https://github.com/user-attachments/assets/c72aff79-1024-4b32-85b2-2637c95652b4" />
 
+#### Insight:
+This shows how revenue fluctuates each month. It’s useful for spotting seasonal highs and lows, not just busy periods.
 
+### Yearly revenue trend
+```
+SELECT 
+	YEAR(OrderDate) OrderYear,
+	ROUND(SUM(OD.UnitPrice * OD.Quantity * (1-OD.Discount)),2) TotalRevenue
+FROM Orders O
+INNER JOIN [Order Details] OD ON O.OrderID = OD.OrderID
+GROUP BY YEAR(OrderDate)
+ORDER BY OrderYear
+```
+<img width="150" height="81" alt="Screenshot 2025-08-05 152111" src="https://github.com/user-attachments/assets/09865186-8310-493a-8fab-15532c2a18d8" />
 
+#### Insight:
+A clear view of growth or decline over time—ideal for long-term planning or investor reporting.
 
+###  Revenue by weekday
+```
+ SELECT 
+	DATENAME(WEEKDAY, Orderdate) OrderDay,
+	ROUND(SUM(OD.UnitPrice * OD.Quantity * (1-OD.Discount)),2) TotalRevenue
+FROM Orders O
+INNER JOIN [Order Details] OD ON O.OrderID = OD.OrderID
+GROUP BY DATENAME(WEEKDAY, Orderdate)
+ORDER BY TotalRevenue DESC
+```
+<img width="162" height="121" alt="Screenshot 2025-08-05 152644" src="https://github.com/user-attachments/assets/a50cf263-79fb-4942-806c-e38d6cc3439a" />
 
+#### Insight:
+Tells you which days of the week actually bring in the most cash—not just the most orders. Great for planning marketing or promotions.
 
+## Employee Performance
+Since every order is linked to an employee, it’s easy to see who's doing the most and who's bringing in the most. I looked at both order volume and total revenue to spot the top performers.
 
+### Which employees generate the most revenue?
+```
+SELECT 
+	E.EmployeeID,
+	E.FirstName+' '+E.LastName EmployeeName,
+	ROUND(SUM(OD.UnitPrice * OD.Quantity * (1-OD.Discount)),2) TotalRevenue
+FROM Employees E
+INNER JOIN Orders O ON E.EmployeeID =O.EmployeeID
+INNER JOIN [Order Details] OD ON O.OrderID = OD.OrderID
+GROUP BY E.FirstName+' '+E.LastName , E.EmployeeID
+ORDER BY TotalRevenue DESC
+```
+<img width="265" height="194" alt="Screenshot 2025-08-05 155231" src="https://github.com/user-attachments/assets/8db27f34-231a-45f9-ba5b-73b115b62141" />
 
+### Which employees handle the most orders?
+```
+SELECT 
+	E.EmployeeID,
+	E.FirstName+' '+E.LastName EmployeeName,
+	COUNT(o.OrderID) TotalOrders
+FROM Employees E
+INNER JOIN Orders O ON E.EmployeeID =O.EmployeeID
+GROUP BY E.FirstName+' '+E.LastName , E.EmployeeID
+ORDER BY TotalOrders DESC
+```
+<img width="252" height="194" alt="Screenshot 2025-08-05 155716" src="https://github.com/user-attachments/assets/47992fdc-d0d5-4bdd-b2f5-24cc8cfa35e3" />
 
-
-
+#### Insight:
+This shows who's responsible for the most order activity. High volume doesn’t always mean high revenue, but it’s a strong indicator of workload.
 
 
 
