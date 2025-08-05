@@ -36,7 +36,8 @@ ORDER BY TABLE_NAME, ORDINAL_POSITION ASC;
 ### Entity Relationship Diagram (ERD)
 To make sense of how the tables connect, I mapped out the core relationships in the Northwind database. This helped guide the joins I used in the analysis.
 
-<img width="904" height="493" alt="Northwind ERD" src="https://github.com/user-attachments/assets/415b14a3-7259-48b6-a39e-015b07048d1d" />
+<img width="926" height="540" alt="ERD" src="https://github.com/user-attachments/assets/086b48f7-0faf-4366-978e-6f8dc413113b" />
+
 
 ## Customer Insights
 After understanding the structure, I started with the Customers table to answer a few key questions:
