@@ -93,15 +93,42 @@ ORDER BY TotalQuantity DESC
 #### Insight:
 These are the high-volume movers. Knowing what sells most helps with inventory planning, pricing strategy, and prioritizing reorders.
 
+### Which products generate the highest revenue?
+```
+SELECT TOP 10
+	P.ProductName ,ROUND(SUM(OD.UnitPrice * OD.Quantity * (1- od.Discount)),2) TotalRevenue
+FROM Products P
+INNER JOIN [Order Details] OD ON P.ProductID =OD.ProductID
+GROUP BY P.ProductName
+ORDER BY TotalRevenue DESC
+```
+<img width="218" height="211" alt="Revenue" src="https://github.com/user-attachments/assets/bacba634-4831-447c-9ad3-2a44ef946904" />
 
+#### Insight:
+Some products sell fewer units but generate more revenue. This helps focus on high-margin or high-value items.
 
+### Which categories are the most profitable?
+```
+SELECT 
+	C.CategoryName , ROUND(SUM(OD.UnitPrice * OD.Quantity * (1- od.Discount)),2) TotalRevenue
+FROM Categories C
+INNER JOIN Products P ON C.CategoryID =P.CategoryID
+INNER JOIN [Order Details] OD ON P.ProductID =OD.ProductID
+GROUP BY C.CategoryName
+ORDER BY TotalRevenue DESC
+```
+<img width="174" height="172" alt="Category" src="https://github.com/user-attachments/assets/5c1e06a4-6c24-4a02-8840-e4607a7a448b" />
 
+#### Insight:
+Looking at performance by category helps understand which product groups are driving revenue and which might need review.
 
-
-
-
-
-
+### How many units are in stock vs. on order per product?
+```
+SELECT 
+	ProductName, UnitsInStock , UnitsOnOrder
+FROM Products
+```
+<img width="333" height="250" alt="Screenshot 2025-08-05 125053" src="https://github.com/user-attachments/assets/7263d24d-7a25-43a8-ab5b-44cf0b4b4b05" />
 
 
 
