@@ -130,10 +130,22 @@ FROM Products
 ```
 <img width="333" height="250" alt="Screenshot 2025-08-05 125053" src="https://github.com/user-attachments/assets/7263d24d-7a25-43a8-ab5b-44cf0b4b4b05" />
 
+#### Insight:
+This highlights products that may need restocking or where supply isn’t keeping up with demand.
 
+## Sales Trends
+Here I wanted to answer: When are people buying? This section digs into order activity over time to uncover patterns, seasonality, and overall sales momentum.
 
-
-
+### How do orders trend month by month?
+```
+SELECT	
+	FORMAT(Orderdate, 'yyyy-MM') OrderMonth,
+	COUNT(OrderID) TotalOrders
+FROM Orders
+WHERE OrderDate IS NOT NULL
+GROUP BY FORMAT(Orderdate, 'yyyy-MM')
+ORDER BY OrderMonth 
+```
 
 
 
