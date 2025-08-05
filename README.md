@@ -34,7 +34,23 @@ To make sense of how the tables connect, I mapped out the core relationships in 
 
 <img width="904" height="493" alt="Northwind ERD" src="https://github.com/user-attachments/assets/415b14a3-7259-48b6-a39e-015b07048d1d" />
 
-
+## Customer Insights
+After understanding the structure, I started with the Customers table to answer a few key questions:
+### Which Countries had the most Customers?
+```
+SELECT Country , COUNT(CustomerID) TotalCustomers
+FROM Customers
+GROUP BY Country
+ORDER BY TotalCustomers DESC
+```
+### Who are the top 10 customers by total orders?
+```
+SELECT TOP 10 C.CompanyName ,COUNT(O.OrderID) TotalOrders
+FROM Customers C
+INNER JOIN Orders O ON C.CustomerID =O.CustomerID
+GROUP BY C.CompanyName
+ORDER BY TotalOrders DESC
+```
 
 
 
