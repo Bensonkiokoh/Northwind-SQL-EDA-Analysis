@@ -1,5 +1,7 @@
 # Northwind-SQL-EDA-Analysis
-
+## Table of Content
+- [Customer Insights](#customer-insights)
+- 
 ## Introduction
 
 This project is a full exploratory data analysis (EDA) of the Northwind database using pure SQL. Northwind is a classic dataset that simulates a retail company’s operations, including customers, orders, products, employees, suppliers, and shipping.
