@@ -20,7 +20,7 @@ The goal of this analysis is to explore key business questions such as:
 Before diving into analysis, I needed to understand the structure of the Northwind database what tables exist, what kind of data they hold, and how they connect.
 
 ### What Tables are in the database?
-```
+```sql
 SELECT * 
 FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_TYPE = 'BASE TABLE';
@@ -28,7 +28,7 @@ WHERE TABLE_TYPE = 'BASE TABLE';
 <img width="426" height="286" alt="DBTable" src="https://github.com/user-attachments/assets/aa7328ee-f88b-4f7b-89db-d2e8d88fc9d7" />
 
 ### What columns does each table have?
-```
+```sql
 SELECT 
 TABLE_NAME,
 COLUMN_NAME,
@@ -47,7 +47,7 @@ To make sense of how the tables connect, I mapped out the core relationships in 
 ## Customer Insights
 After understanding the structure, I started with the Customers table to answer a few key questions:
 ### Which Countries had the most Customers?
-```
+```sql
 SELECT Country , COUNT(CustomerID) TotalCustomers
 FROM Customers
 GROUP BY Country
@@ -56,7 +56,7 @@ ORDER BY TotalCustomers DESC
 <img width="163" height="214" alt="Cstmer" src="https://github.com/user-attachments/assets/b0badf54-efc8-42a9-b31d-08b9a5a988d7" />
 
 ### Who are the top 10 customers by total orders?
-```
+```sql
 SELECT TOP 10 C.CompanyName ,COUNT(O.OrderID) TotalOrders
 FROM Customers C
 INNER JOIN Orders O ON C.CustomerID =O.CustomerID
@@ -68,7 +68,7 @@ ORDER BY TotalOrders DESC
 These are your most engaged customers. If you're doing account-based strategies, these are the ones to prioritize.
 
 ### Who are the top 10 customers by total revenue
-```
+```sql
 SELECT TOP 10
 	C.CustomerID,C.CompanyName, ROUND(SUM(OD.UnitPrice * OD.Quantity * (1- OD.Discount)),2) TotalRevenue
 FROM Customers C
@@ -86,7 +86,7 @@ High order count doesn’t always mean high revenue. This query shows you the re
 In this part, I looked at what’s actually selling by volume and revenue. The goal was to spot top performing products, see which categories bring in the most money, and check if inventory levels align with demand.
 
 ### What are the top 10 best-selling products by quantity sold?
-```
+```sql
 SELECT TOP 10
 	P.ProductName ,SUM(OD.Quantity) TotalQuantity
 FROM Products P
@@ -100,7 +100,7 @@ ORDER BY TotalQuantity DESC
 These are the high-volume movers. Knowing what sells most helps with inventory planning, pricing strategy, and prioritizing reorders.
 
 ### Which products generate the highest revenue?
-```
+```sql
 SELECT TOP 10
 	P.ProductName ,ROUND(SUM(OD.UnitPrice * OD.Quantity * (1- od.Discount)),2) TotalRevenue
 FROM Products P
@@ -114,7 +114,7 @@ ORDER BY TotalRevenue DESC
 Some products sell fewer units but generate more revenue. This helps focus on high-margin or high-value items.
 
 ### Which categories are the most profitable?
-```
+```sql
 SELECT 
 	C.CategoryName , ROUND(SUM(OD.UnitPrice * OD.Quantity * (1- od.Discount)),2) TotalRevenue
 FROM Categories C
@@ -129,7 +129,7 @@ ORDER BY TotalRevenue DESC
 Looking at performance by category helps understand which product groups are driving revenue and which might need review.
 
 ### How many units are in stock vs. on order per product?
-```
+```sql
 SELECT 
 	ProductName, UnitsInStock , UnitsOnOrder
 FROM Products
@@ -143,7 +143,7 @@ This highlights products that may need restocking or where supply isn’t keepin
 Here I wanted to answer: When are people buying? This section digs into order activity over time to uncover patterns, seasonality, and overall sales momentum.
 
 ### How do orders trend month by month?
-```
+```sql
 SELECT	
 	FORMAT(Orderdate, 'yyyy-MM') OrderMonth,
 	COUNT(OrderID) TotalOrders
@@ -158,7 +158,7 @@ ORDER BY OrderMonth
 This shows how active each month is in terms of order volume. 
 
 ### Which days of the week get the most orders?
-```
+```sql
 SELECT 
 	DATENAME(WEEKDAY , Orderdate) OrderDay,
 	COUNT(OrderID) TotalOrders
@@ -173,7 +173,7 @@ ORDER BY TotalOrders DESC
 This reveals buying behavior across the week. You’ll see which days customers are most active, which is helpful for staffing, promotions, and delivery planning.
 
 ### Year-over-year order trend
-```
+```sql
 SELECT 
 	YEAR(OrderDate) OrderYear,
 	COUNT(OrderID) TotalOrders
@@ -191,7 +191,7 @@ This gives a big-picture view of whether business activity is growing or droppin
 Order volume tells you how busy things are revenue shows what actually matters. In this step, I looked at when the business earns the most, how it changes over time, and which days bring in the biggest sales.
 
 ### Monthly revenue trend
-```
+```sql
 SELECT 
 	FORMAT(O.orderdate , 'yyyy-MM') OrderMonth,
 	ROUND(SUM(OD.UnitPrice * OD.Quantity * (1-OD.Discount)),2) TotalRevenue
@@ -206,7 +206,7 @@ ORDER BY OrderMonth
 This shows how revenue fluctuates each month. It’s useful for spotting seasonal highs and lows, not just busy periods.
 
 ### Yearly revenue trend
-```
+```sql
 SELECT 
 	YEAR(OrderDate) OrderYear,
 	ROUND(SUM(OD.UnitPrice * OD.Quantity * (1-OD.Discount)),2) TotalRevenue
@@ -221,7 +221,7 @@ ORDER BY OrderYear
 A clear view of growth or decline over time—ideal for long-term planning or investor reporting.
 
 ###  Revenue by weekday
-```
+```sql
  SELECT 
 	DATENAME(WEEKDAY, Orderdate) OrderDay,
 	ROUND(SUM(OD.UnitPrice * OD.Quantity * (1-OD.Discount)),2) TotalRevenue
@@ -239,7 +239,7 @@ Tells you which days of the week actually bring in the most cash—not just the 
 Since every order is linked to an employee, it’s easy to see who's doing the most and who's bringing in the most. I looked at both order volume and total revenue to spot the top performers.
 
 ### Which employees generate the most revenue?
-```
+```sql
 SELECT 
 	E.EmployeeID,
 	E.FirstName+' '+E.LastName EmployeeName,
