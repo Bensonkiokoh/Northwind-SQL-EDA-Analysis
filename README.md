@@ -253,7 +253,7 @@ ORDER BY TotalRevenue DESC
 <img width="265" height="194" alt="Screenshot 2025-08-05 155231" src="https://github.com/user-attachments/assets/8db27f34-231a-45f9-ba5b-73b115b62141" />
 
 ### Which employees handle the most orders?
-```
+```sql
 SELECT 
 	E.EmployeeID,
 	E.FirstName+' '+E.LastName EmployeeName,
