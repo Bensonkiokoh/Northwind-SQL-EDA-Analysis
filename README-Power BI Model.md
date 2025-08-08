@@ -174,10 +174,41 @@ SUMX (
     'FactOrderDetails'[Quantity] * 'FactOrderDetails'[UnitPrice] * ( 1 - 'FactOrderDetails'[Discount] )
 )
 ```
+#### Total Quantity Sold
+```sql
+Total Quantity Sold =
+SUM ( FactOrderDetails[Quantity] )
+```
+#### Total Discount Amount
+```sql
+Total Discount =
+SUMX (
+    'FactOrderDetails',
+    'FactOrderDetails'[UnitPrice] * 'FactOrderDetails'[Quantity] * 'FactOrderDetails'[Discount]
+)
+```
+Then I layered in performance metrics:
 
-
-
-
+#### Average Order Value
+```sql
+Average Order Value =
+DIVIDE ( [Total Revenue], [Total Orders], BLANK () )
+```
+#### Revenue per Customer
+```sql
+Revenue per Customer =
+DIVIDE ( [Total Revenue], [Total Customers], BLANK () )
+```
+#### Sales YTD
+```sql
+Sales YTD =
+TOTALYTD ( [Total Revenue], 'Calendar'[Date] )
+```
+#### Top Products by Revenue
+```sql
+Product Rank =
+RANKX ( ALL ( 'DimProducts' ), [Total Revenue],, DESC )
+```
 
 
 
