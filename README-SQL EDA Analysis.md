@@ -1,4 +1,4 @@
-# Northwind-SQL-EDA-Analysis
+# Northwind SQL EDA Analysis
 ## Table of Content
 - [Customer Insights](#customer-insights)
 - [Product Analysis](#product-analysis)
