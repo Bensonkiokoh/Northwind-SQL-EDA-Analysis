@@ -165,8 +165,15 @@ RETURN
 ### DAX Measures: Turning Raw Data Into Insight
 With the model structure in place, it was time to bring the numbers to life. This is where DAX came in not just to do math, but to answer the real questions we’d laid out earlier.
 
-I started by building the core metrics you'd expect in any sales report:
-
+I started by building the core metrics for the sales report:
+#### Total Revenue
+```sql
+Total Revenue =
+SUMX (
+    'FactOrderDetails',
+    'FactOrderDetails'[Quantity] * 'FactOrderDetails'[UnitPrice] * ( 1 - 'FactOrderDetails'[Discount] )
+)
+```
 
 
 
