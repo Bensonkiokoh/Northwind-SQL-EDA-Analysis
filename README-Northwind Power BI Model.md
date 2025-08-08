@@ -1,4 +1,5 @@
-# Building a Star Schema for Power BI Using SQL Views
+# Building the Northwind Power BI Model
+## Starting with SQL Views
 To prepare the Northwind dataset for analysis in Power BI, I started by exploring the raw tables. I focused on three key ones since they hold the bulk of the transactional data:
 - Order Details
 - Orders
@@ -104,8 +105,21 @@ SELECT
 FROM Employees;
 ```
 These views allowed me to build a clean star schema inside Power BI, reduce redundancy, and make the model easier to work with.
+## Analysis Objectives: What This Model Aims to Answer
+Before moving into Power BI, I laid out the key business questions I wanted the model to help answer.
 
-# Power Query Cleanup
+The goal was to build something that could actually guide smarter decisions.
+
+Here’s what I had in mind:
+- Which products and categories are top performers?
+- Who are the highest-value customers?
+- Which regions drive the most revenue?
+- How are individual employees performing on sales?
+- Are there any clear trends in monthly or yearly performance?
+- What role do discounts play in total revenue and margins?
+
+## Power BI: Modeling and Transformation
+### Power Query Cleanup
 Once the SQL views were connected in Power BI, I stepped into Power Query to apply a few essential transformations:
 - Renamed the tables to remove the vw_ prefix for clarity (e.g., vw_DimCustomers → DimCustomers)
 - Profiled the data to check for any issues in structure or content
@@ -113,7 +127,7 @@ Once the SQL views were connected in Power BI, I stepped into Power Query to app
 
 Once confirmed clean, I loaded everything into the Power BI model.
 
-# Data Modeling in Power BI
+### Data Modeling in Power BI
 After cleaning up in Power Query, I switched over to the data model view. Since the relationships were already well defined in SQL and the keys were clean, Power BI automatically detected most of them no manual linking needed.
 
 The model follows a classic star schema. At the center is the FactOrderDetails table, holding all transactional grain: order IDs, products sold, quantities, discounts, prices, and dates.
@@ -125,7 +139,7 @@ Surrounding it are the dimension tables Customers, Employees, Products, Categori
 ###  Data Model Relationships
 In the data model, relationships between tables followed a classic 1-to-many pattern with each dimension table (like Products, Categories, Employees, Customers, Shippers, and Suppliers) on the one side, and the fact table FactOrderDetails on the many side.
 
-# Creating the Calendar Table
+### Creating the Calendar Table
 To enable time-based analysis monthly trends, year-over-year comparisons, or filtering by quarter I needed a proper calendar table.
 
 ```sql
@@ -148,9 +162,10 @@ RETURN
         "YearMonth", FORMAT ( [Date], "YYYY-MM" )
     )
 ```
+### DAX Measures: Turning Raw Data Into Insight
+With the model structure in place, it was time to bring the numbers to life. This is where DAX came in not just to do math, but to answer the real questions we’d laid out earlier.
 
-
-
+I started by building the core metrics you'd expect in any sales report:
 
 
 
