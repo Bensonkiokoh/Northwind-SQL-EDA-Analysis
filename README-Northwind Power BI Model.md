@@ -105,16 +105,49 @@ FROM Employees;
 ```
 These views allowed me to build a clean star schema inside Power BI, reduce redundancy, and make the model easier to work with.
 
+# Power Query Cleanup
+Once the SQL views were connected in Power BI, I stepped into Power Query to apply a few essential transformations:
+- Renamed the tables to remove the vw_ prefix for clarity (e.g., vw_DimCustomers → DimCustomers)
+- Profiled the data to check for any issues in structure or content
+- No heavy transformations were needed since most of the shaping was handled in SQL
 
+Once confirmed clean, I loaded everything into the Power BI model.
 
+# Data Modeling in Power BI
+After cleaning up in Power Query, I switched over to the data model view. Since the relationships were already well defined in SQL and the keys were clean, Power BI automatically detected most of them no manual linking needed.
 
+The model follows a classic star schema. At the center is the FactOrderDetails table, holding all transactional grain: order IDs, products sold, quantities, discounts, prices, and dates.
 
+Surrounding it are the dimension tables Customers, Employees, Products, Categories, Shippers, and Suppliers each providing context for slicing and filtering.
 
+<img width="959" height="736" alt="Data Model" src="https://github.com/user-attachments/assets/f3c79b45-3883-4ea7-b921-459ae2067750" />
 
+###  Data Model Relationships
+In the data model, relationships between tables followed a classic 1-to-many pattern with each dimension table (like Products, Categories, Employees, Customers, Shippers, and Suppliers) on the one side, and the fact table FactOrderDetails on the many side.
 
+# Creating the Calendar Table
+To enable time-based analysis monthly trends, year-over-year comparisons, or filtering by quarter I needed a proper calendar table.
 
-
-
+```sql
+Calendar =
+VAR MinDate =
+    MIN ( 'FactOrderDetails'[OrderDate] )
+VAR MaxDate =
+    MAX ( 'FactOrderDetails'[OrderDate] )
+VAR BaseCalendar =
+    CALENDAR ( MinDate, MaxDate )
+RETURN
+    ADDCOLUMNS (
+        BaseCalendar,
+        "Year", YEAR ( [Date] ),
+        "Month Num", MONTH ( [Date] ),
+        "Month", FORMAT ( [Date], "MMMM" ),
+        "Day Num", WEEKDAY ( [Date], 2 ),
+        "Day", FORMAT ( [Date], "DDDD" ),
+        "Quarter", "Q-" & QUARTER ( [Date] ),
+        "YearMonth", FORMAT ( [Date], "YYYY-MM" )
+    )
+```
 
 
 
